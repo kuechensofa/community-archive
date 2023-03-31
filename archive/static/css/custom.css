@@ -1,0 +1,15 @@
+.record-thumb {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.record-image {
+    max-width: 100%;
+    max-height: 678px;
+    width: auto;
+    height: auto;
+}
+
+.replay-embed {
+    height: 678px;
+}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <h2>{% translate 'Collections' %}</h2>
+
+    <div class="mb-3 btn-group">
+        {% if perms.archive.add_collection %}
+            <a href="{% url 'collection-create' %}" class="btn btn-primary">{% translate 'Create Collection' %}</a>
+        {% endif %}
+    </div>
+
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for collection in collection_list %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ collection }}</h5>
+                        {% if collection.description %}
+                            <p class="card-text">{{ collection.description|truncatechars:50 }}</p>
+                        {% endif %}
+                        {% with record_count=collection.record_set.count %}
+                            <p class="text-muted">
+                                {% blocktranslate count counter=record_count %}
+                                    {{ record_count }} record
+                                    {% plural %}
+                                    {{ record_count }} records
+                                {% endblocktranslate %}
+                            </p>
+                        {% endwith %}
+                    </div>
+                    <a href="{% url 'collection-detail' pk=collection.id %}"
+                       class="stretched-link"></a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

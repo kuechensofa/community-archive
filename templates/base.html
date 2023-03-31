@@ -1,0 +1,84 @@
+{% load static i18n %}
+{% get_current_language as lang %}
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Community Archive</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+    {% block additional-css %}{% endblock %}
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Community Archive</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="{% translate 'Toggle navigation' %}">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a href="{% url 'collection-list' %}" class="nav-link">{% translate 'Collections' %}</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'category-list' %}" class="nav-link">{% translate 'Categories' %}</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            {% translate 'Storage' %}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'wacz-archive-list' %}">
+                                    {% translate 'WACZ Archives' %}
+                                </a>
+                                <a class="dropdown-item" href="{% url 'storage-list' %}">
+                                    {% translate 'Storages' %}
+                                </a>
+                                <a class="dropdown-item" href="{% url 'worm-storage-list' %}">
+                                    {% translate 'WORM Storages' %}
+                                </a>
+                                <a class="dropdown-item" href="{% url 'worm-storage-type-list' %}">
+                                    {% translate 'WORM Storage Types' %}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'logout' %}" class="nav-link">{% translate 'Logout' %}</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="nav-link">{% translate 'Login' %}</a>
+                    {% endif %}
+                </li>
+                {% if user and user.is_staff %}
+                    <li class="nav-item">
+                        <a href="/admin" class="nav-link">{% translate 'Admin' %}</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <form class="d-flex" action="{% url 'search' %}" method="get" role="search">
+                <input class="form-control me-2" type="search" name="q" placeholder="{% translate 'Search' %}"
+                       aria-label="{% translate 'Search' %}" {% if q %}value="{{ q }}"{% endif %}>
+                <button class="btn btn-primary" type="submit">{% translate 'Search' %}</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% block additional_js %}{% endblock %}
+</body>
+</html>

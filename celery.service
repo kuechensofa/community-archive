@@ -1,0 +1,25 @@
+[Unit]
+Description=Community Archive Celery Service
+After=network.target
+
+[Service]
+Type=forking
+User=www-data
+Group=www-data
+WorkingDirectory=/srv/community-archive
+ExecStart=/bin/sh -c '/srv/community-archive/venv/bin/celery -A community_archive multi start w1 \
+    --loglevel=INFO \
+    --logfile=/var/log/community_archive/celery.log \
+    --pidfile=/var/run/community_archive/celery.pid'
+ExecStop=/bin/sh -c '/srv/community-archive/venv/bin/celery -A community_archive worker multi stopwait w1 \
+    --loglevel=INFO \
+    --logfile=/var/log/community_archive/celery.log \
+    --pidfile=/var/run/community_archive/celery.pid'
+ExecReload=/bin/sh -c '/srv/community-archive/venv/bin/celery -A community_archive worker multi restart w1 \
+    --loglevel=INFO \
+    --logfile=/var/log/community_archive/celery.log \
+    --pidfile=/var/run/community_archive/celery.pid'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

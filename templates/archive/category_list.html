@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <h2>{% translate 'Record Categories' %}</h2>
+
+    {% if perms.record_category.add_record_category %}
+        <div class="btn-group mb-3">
+            <a href="{% url 'category-create' %}" class="btn btn-primary">{% translate 'Create Category' %}</a>
+        </div>
+    {% endif %}
+
+    <ul class="list-group">
+        {% for category in category_list %}
+            <li class="list-group-item"><a href="{% url 'category-detail' pk=category.pk %}">{{ category }}</a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

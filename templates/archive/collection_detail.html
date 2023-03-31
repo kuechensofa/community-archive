@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h2>
+        {{ collection }}
+        {% if user.is_authenticated %}
+            {% if collection.public %}
+                <span class="badge text-bg-secondary">{% translate "Public" %}</span>
+            {% else %}
+                <span class="badge text-bg-secondary">{% translate "Private" %}</span>
+            {% endif %}
+        {% endif %}
+    </h2>
+
+    {% if collection.description %}
+        <div class="description">
+            {{ collection.description|linebreaks }}
+        </div>
+    {% endif %}
+
+    <div class="btn-group mb-3" role="group">
+        {% if perms.archive.change_collection %}
+            <a href="{% url 'collection-update' pk=collection.pk %}" class="btn btn-primary">{% translate 'Edit' %}</a>
+        {% endif %}
+        {% if perms.archive.delete_collection %}
+            <a href="{% url 'collection-delete' pk=collection.pk %}" class="btn btn-danger">{% translate 'Delete' %}</a>
+        {% endif %}
+        {% if perms.archive.add_record %}
+            <a href="{% url 'record-create' collection_id=collection.id %}" class="btn btn-primary">{% translate 'Add Record' %}</a>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <form>
+                {{ record_filter.form|crispy }}
+
+                <button type="submit" class="btn btn-primary">{% translate 'Filter' %}</button>
+            </form>
+        </div>
+    <div class="col-md-9">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {% for record in record_filter.qs %}
+            <div class="col">
+                <div class="card">
+                    {% if record.get_thumbnail %}
+                        <img src="{{ MEDIA_URL }}{{ record.get_thumbnail.thumbnail }}" class="card-img-top">
+                    {% elif record.is_video %}
+                        <img src="{% static 'icons/film.svg' %}" alt="{% translate 'Film icon' %}" class="card-img-top">
+                    {% elif record.is_wacz %}
+                        <img src="{% static 'icons/globe.svg' %}" alt="{% translate 'Film icon' %}" class="card-img-top">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ record }}</h5>
+                        {% if record.description %}
+                            <p class="card-text">{{ record.description|truncatechars:50 }}</p>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'record-detail' collection_id=collection.id pk=record.id %}"
+                       class="stretched-link"></a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,11 @@
+Django~=4.1.7
+django-guardian~=2.4.0
+django-crispy-forms~=2.0
+crispy-bootstrap5~=0.7
+django_filter~=22.1
+Pillow~=9.4.0
+pdf2image~=1.16.2
+mysqlclient~=2.1.0
+django-environ~=0.10.0
+celery~=5.2.7
+redis~=4.5.1

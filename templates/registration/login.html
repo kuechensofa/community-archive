@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="text-center">
+        <h1 class="h3 mb-3 fw-normal">{% translate 'Please sign in' %}</h1>
+
+        {% if form.errors %}
+            <p>{% translate "Your username and password didn't match. Please try again." %}</p>
+        {% endif %}
+
+        {% if next %}
+            {% if user.is_authenticated %}
+                <p>{% translate "Your account doesn't have access to this page. To proceed please login with an account that has access." %}</p>
+            {% else %}
+                <p>{% translate "Please login to see this page." %}</p>
+            {% endif %}
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-floating">
+                <input id="inputUsername" class="form-control" type="text" name="{{ form.username.name }}" value="{{ form.username.value|default:'' }}">
+                <label for="inputUsername">{% translate "Username" %}</label>
+            </div>
+            <div class="form-floating">
+                <input id="inputPassword" class="form-control" type="password" name="{{ form.password.name }}" value="{{ form.password.value|default:'' }}">
+                <label for="inputPassword">{% translate "Password" %}</label>
+            </div>
+
+            <input type="submit" value="{% translate 'Sign in' %}" class="w-100 btn btn-lg btn-primary">
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+    </div>
+
+{% endblock %}

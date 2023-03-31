@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <form action="{% url 'search' %}" method="get">
+        <div class="mb-3">
+            <label for="queryInput" class="form-label">{% translate 'Search query' %}</label>
+            <input type="text" name="q" id="queryInput" class="form-control {% if error %}is-invalid{% endif %}"
+                   required {% if q %}value="{{ q }}"{% endif %}>
+            {% if error %}
+                <div class="invalid-feedback">
+                    {{ error }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">{% translate 'Search' %}</button>
+        </div>
+    </form>
+
+    {% if records.exists %}
+        <table class="table">
+            <tr>
+                <th>{% translate 'Title' %}</th>
+                <th>{% translate 'Collection' %}</th>
+            </tr>
+            {% for record in records %}
+                <tr>
+                    <td>
+                        <a href="{% url 'record-detail' collection_id=record.collection_id pk=record.pk %}">{{ record.title }}</a>
+                    </td>
+                    <td><a href="{% url 'collection-detail' pk=record.collection_id %}">{{ record.collection }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>{% translate 'No records found.' %}</p>
+    {% endif %}
+{% endblock %}

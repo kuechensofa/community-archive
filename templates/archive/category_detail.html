@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <h2>{{ category }}</h2>
+
+    <div class="btn-group mb-3">
+        {% if perms.archive.change_record_category %}
+            <a href="{% url 'category-update' pk=category.pk %}" class="btn btn-primary">{% translate 'Edit' %}</a>
+        {% endif %}
+        {% if perms.archive.delete_record_category %}
+            <a href="{% url 'category-delete' pk=category.pk %}" class="btn btn-danger">{% translate 'Delete' %}</a>
+        {% endif %}
+    </div>
+
+{% endblock %}
