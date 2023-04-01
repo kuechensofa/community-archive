@@ -29,28 +29,6 @@
                     <li class="nav-item">
                         <a href="{% url 'category-list' %}" class="nav-link">{% translate 'Categories' %}</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            {% translate 'Storage' %}
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="{% url 'wacz-archive-list' %}">
-                                    {% translate 'WACZ Archives' %}
-                                </a>
-                                <a class="dropdown-item" href="{% url 'storage-list' %}">
-                                    {% translate 'Storages' %}
-                                </a>
-                                <a class="dropdown-item" href="{% url 'worm-storage-list' %}">
-                                    {% translate 'WORM Storages' %}
-                                </a>
-                                <a class="dropdown-item" href="{% url 'worm-storage-type-list' %}">
-                                    {% translate 'WORM Storage Types' %}
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
                 {% endif %}
                 <li class="nav-item">
                     {% if user.is_authenticated %}
